@@ -7,7 +7,7 @@
     <title>Galeria de Fotos</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="index.css">
-<link rel="icon" type="image/png" href="../img/LOGO FYP.png">
+    <link rel="icon" type="image/png" href="../img/LOGO FYP.png">
     <style>
         /* Estilos para la barra de navegación */
         nav {
@@ -55,6 +55,8 @@
             ul {
                 flex-direction: column;
                 align-items: flex-start;
+                width: 100%;
+                padding: 0 20px;
             }
             
             li {
@@ -97,23 +99,25 @@
 <body>
     <header>
         <nav>
-            <ul>
-                <li>
-                    <a href="../index.html">Inicio</a>
-                </li>
-                <li>
-                    <a href="Galeria de Fotos.html">Galeria de Fotos</a>
-                </li>
-                <li>
-                    <a href="Productos.html">Productos</a>
-                </li>
-                <li>
-                    <a href="Contacto.html">Contacto</a>
-                </li>
-                <li>
-                    <a href="Sobre nosotros.html">Sobre nosotros</a>
-                </li>
-            </ul>
+            <div class="container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-auto">
+                        <a href="../index.html">Inicio</a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="Galeria de Fotos.html">Galeria de Fotos</a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="Productos.html">Productos</a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="Contacto.html">Contacto</a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="Sobre nosotros.html">Sobre nosotros</a>
+                    </div>
+                </div>
+            </div>
         </nav>
     </header>
     <h1>Galeria de Fotos</h1>
