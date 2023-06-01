@@ -161,7 +161,7 @@ footer {
 .carts a {
     font-family: system-ui;
     text-decoration: none;
-    background: red;
+    background: rgb(0, 235, 129);
     padding: 9px 23px;
     color: #fff;
     font-size: 17px;
@@ -206,7 +206,7 @@ footer {
 }
 
 .cart-products .item span {
-    background-color: red;
+    background-color: aquamarine;
     padding: 0px 5px;
     border-radius: 50%;
     color: #fff;
