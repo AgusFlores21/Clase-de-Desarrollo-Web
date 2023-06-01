@@ -1,37 +1,107 @@
-// Event listener para los botones "Agregar al carrito"
-const addToCartButtons = document.querySelectorAll('.add-to-cart-button');
-addToCartButtons.forEach(button => {
-    button.addEventListener('click', addToCart);
-});
+//variables
+let allContainerCart = document.querySelector('.products');
+let containerBuyCart = document.querySelector('.card-items');
+let priceTotal = document.querySelector('.price-total')
+let amountProduct = document.querySelector('.count-product');
 
-// Función para agregar al carrito
-function addToCart(event) {
-    const productId = event.target.getAttribute('data-product-id');
-    const productCard = event.target.closest('.product-card');
-    const productTitle = productCard.querySelector('.product-title').textContent;
-    const productPrice = productCard.querySelector('.product-price').textContent;
 
-    const product = {
-        id: productId,
-        title: productTitle,
-        price: productPrice
-    };
+let buyThings = [];
+let totalCard = 0;
+let countProduct = 0;
 
-    // Agregar el producto al carrito en el localStorage
-    addToLocalStorage(product);
+//functions
+loadEventListenrs();
+function loadEventListenrs(){
+    allContainerCart.addEventListener('click', addProduct);
 
-    // Mostrar una alerta o mensaje indicando que el producto se agregó al carrito (opcional)
-    alert(`Producto ${productId} agregado al carrito.`);
-
-    // Redireccionar a la página del carrito
-    window.location.href = 'carrito.html';
+    containerBuyCart.addEventListener('click', deleteProduct);
 }
 
-// Función para agregar el producto al localStorage
-function addToLocalStorage(product) {
-    let cartItems = localStorage.getItem('cartItems');
-    cartItems = cartItems ? JSON.parse(cartItems) : [];
-
-    cartItems.push(product);
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+function addProduct(e){
+    e.preventDefault();
+    if (e.target.classList.contains('btn-add-cart')) {
+        const selectProduct = e.target.parentElement; 
+        readTheContent(selectProduct);
+    }
 }
+
+function deleteProduct(e) {
+    if (e.target.classList.contains('delete-product')) {
+        const deleteId = e.target.getAttribute('data-id');
+
+        buyThings.forEach(value => {
+            if (value.id == deleteId) {
+                let priceReduce = parseFloat(value.price) * parseFloat(value.amount);
+                totalCard =  totalCard - priceReduce;
+                totalCard = totalCard.toFixed(2);
+            }
+        });
+        buyThings = buyThings.filter(product => product.id !== deleteId);
+        
+        countProduct--;
+    }
+    //FIX: El contador se quedaba con "1" aunque ubiera 0 productos
+    if (buyThings.length === 0) {
+        priceTotal.innerHTML = 0;
+        amountProduct.innerHTML = 0;
+    }
+    loadHtml();
+}
+
+function readTheContent(product){
+    const infoProduct = {
+        image: product.querySelector('div img').src,
+        title: product.querySelector('.title').textContent,
+        price: product.querySelector('div p span').textContent,
+        id: product.querySelector('a').getAttribute('data-id'),
+        amount: 1
+    }
+
+    totalCard = parseFloat(totalCard) + parseFloat(infoProduct.price);
+    totalCard = totalCard.toFixed(2);
+
+    const exist = buyThings.some(product => product.id === infoProduct.id);
+    if (exist) {
+        const pro = buyThings.map(product => {
+            if (product.id === infoProduct.id) {
+                product.amount++;
+                return product;
+            } else {
+                return product
+            }
+        });
+        buyThings = [...pro];
+    } else {
+        buyThings = [...buyThings, infoProduct]
+        countProduct++;
+    }
+    loadHtml();
+    //console.log(infoProduct);
+}
+
+function loadHtml(){
+    clearHtml();
+    buyThings.forEach(product => {
+        const {image, title, price, amount, id} = product;
+        const row = document.createElement('div');
+        row.classList.add('item');
+        row.innerHTML = `
+            <img src="${image}" alt="">
+            <div class="item-content">
+                <h5>${title}</h5>
+                <h5 class="cart-price">${price}$</h5>
+                <h6>Amount: ${amount}</h6>
+            </div>
+            <span class="delete-product" data-id="${id}">X</span>
+        `;
+
+        containerBuyCart.appendChild(row);
+
+        priceTotal.innerHTML = totalCard;
+
+        amountProduct.innerHTML = countProduct;
+    });
+}
+ function clearHtml(){
+    containerBuyCart.innerHTML = '';
+ }

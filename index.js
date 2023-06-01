@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
       localStorage.setItem("cart", JSON.stringify(cartItems));
 
       // Redirigir a la página del carrito
-      window.location.href = "carrito.html";
+      window.location.href = "../page/carrito.html";
     });
   });
 });
